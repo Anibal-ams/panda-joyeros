@@ -1,0 +1,66 @@
+-- Tabla de Categorías
+CREATE TABLE Categorias (
+    id_categoria INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50) NOT NULL,
+    descripcion TEXT
+);
+
+-- Tabla de Materiales
+CREATE TABLE Materiales (
+    id_material INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50) NOT NULL,
+    descripcion TEXT
+);
+
+-- Tabla de Productos (Joyas)
+CREATE TABLE Productos (
+    id_producto INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    id_categoria INT,
+    id_material INT,
+    descripcion TEXT,
+    precio DECIMAL(10, 2) NOT NULL,
+    stock INT NOT NULL,
+    peso DECIMAL(6, 2),
+    dimensiones VARCHAR(50),
+    imagen_url VARCHAR(255),
+    fecha_adicion DATE,
+    destacado BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (id_categoria) REFERENCES Categorias(id_categoria),
+    FOREIGN KEY (id_material) REFERENCES Materiales(id_material)
+);
+
+-- Tabla de Piedras Preciosas
+CREATE TABLE PiedrasPreciosas (
+    id_piedra INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50) NOT NULL,
+    descripcion TEXT
+);
+
+-- Tabla de relación Productos-Piedras (para joyas con múltiples piedras)
+CREATE TABLE ProductosPiedras (
+    id_producto INT,
+    id_piedra INT,
+    cantidad INT,
+    quilates DECIMAL(5, 2),
+    PRIMARY KEY (id_producto, id_piedra),
+    FOREIGN KEY (id_producto) REFERENCES Productos(id_producto),
+    FOREIGN KEY (id_piedra) REFERENCES PiedrasPreciosas(id_piedra)
+);
+
+-- Tabla de Colecciones
+CREATE TABLE Colecciones (
+    id_coleccion INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    fecha_lanzamiento DATE
+);
+
+-- Tabla de relación Productos-Colecciones
+CREATE TABLE ProductosColecciones (
+    id_producto INT,
+    id_coleccion INT,
+    PRIMARY KEY (id_producto, id_coleccion),
+    FOREIGN KEY (id_producto) REFERENCES Productos(id_producto),
+    FOREIGN KEY (id_coleccion) REFERENCES Colecciones(id_coleccion)
+);
